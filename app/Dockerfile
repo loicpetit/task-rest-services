@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 
-RUN mkdir app
+RUN mkdir app; mkdir app/config
 
 WORKDIR app
 

@@ -38,7 +38,7 @@ public class TaskControllerTest {
             .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$[0].id").value(1))
             .andExpect(jsonPath("$[0].id", is(1)))
-            .andExpect(content().json("[{'id':1,'message':'Faire un Hello World !'},{'id':2,'message':'Adapter le Hello World !'}]"));
+            .andExpect(content().json("[{'id':1,'message':'Tâche 1'},{'id':2,'message':'Tâche 2'}]"));
     }
 
 }
