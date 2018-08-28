@@ -6,7 +6,9 @@ public class TaskCollection extends ArrayList<Task> {
 
     public boolean add(String message){
         long id = getNewId();
-        Task task = new Task(id, message);
+        Task task = new Task();
+        task.setId(id);
+        task.setMessage(message);
         return add(task);
     }
 

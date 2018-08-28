@@ -1,10 +1,10 @@
 package com.capgemini.tasks;
 
-import javax.annotation.PostConstruct;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,56 +16,62 @@ public class TaskController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
-    private final TaskCollection tasks = new TaskCollection();
+    @Value("${app.title:Title}")
+    private String title;
 
-    @Value("${app.task1:Task 1}")
-    private String task1;
+    @Value("${app.version:0.0.1}")
+    private String version;
 
-    @Value("${app.task2:Task 2}")
-    private String task2;
+    private final TaskService service;
 
-    @PostConstruct
-    public void init(){
-        tasks.add(task1);
-        tasks.add(task2);
+    private class Root {
+        private String title;
+        private String version;
+
+        public String getTitle(){ return this.title; }
+        public void setTitle(final String title){ this.title = title; }
+
+        public String getVersion(){ return this.version; }
+        public void setVersion(final String version){ this.version = version; }
     }
 
+    @Autowired
+    public TaskController(final TaskService service){
+        this.service = service;
+    }
+
+    @RequestMapping("/")
+    public Root getRoot(){
+        return new Root(){{
+            setTitle(title);
+            setVersion(version);
+        }};
+    } 
+
     @RequestMapping("/tasks")
-    public TaskCollection getTasks() {
+    public List<Task> getTasks() {
         logger.info("Get tasks...");
-        return tasks;
+        return service.findAll();
     }
 
     @RequestMapping("tasks/new")
     public Task createTask(@RequestParam("message") String message){
         logger.info("Add task...");
-        if(tasks.add(message)){
-            return tasks.get(tasks.size()-1);
-        }
-        logger.error("Add task failed !");
-        throw new IllegalArgumentException("L'ajout de la tâche a échoué");
+        final Task task = service.save(message);
+        return task;
     }
 
     @RequestMapping("/tasks/{taskId}")
     public Task getTask(@PathVariable("taskId") long taskId){
         logger.info("Get task {}...", taskId);
-        int index = getIndex(taskId);
-        return tasks.get(index);
+        final Task task = service.find(taskId);
+        return task;
     }
 
     @RequestMapping("tasks/{taskId}/remove")
     public void removeTask(@PathVariable("taskId") long taskId){
         logger.info("Remove task {}...", taskId);
-        int index = getIndex(taskId);
-        tasks.remove(index);
+        service.remove(taskId);
     }
 
-    private int getIndex(long taskId){
-        int index = tasks.indexOf(taskId);
-        if(index < 0){
-            logger.error("L'id {} n'existe pas", taskId);
-            throw new IllegalArgumentException("L'id n'existe pas");
-        }
-        return index;
-    }
 }

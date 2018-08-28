@@ -1,20 +1,32 @@
 package com.capgemini.tasks;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="task")
 public class Task {
 
-    private final long id;
-    private final String message;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Task(long id, String message) {
-        this.id = id;
-        this.message = message;
-    }
+    @Column(name="msg")
+    private String message;
 
-    public long getId() {
+    public Task() {}
+
+    public Long getId() {
         return id;
+    }
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getMessage() {
         return message;
     }
+    public void setMessage(final String message) {
+        this.message = message;
+    }
+
 }
