@@ -1,3 +1,4 @@
+docker volume create task-rest-services-pgdata
 docker network create task-rest-services-net
 docker create --name task-rest-services `
     --publish 8080:8080 `
@@ -12,7 +13,8 @@ docker create --name task-rest-services-postgres `
     --env POSTGRES_USER=postgres `
     --env POSTGRES_PASSWORD=Support2424 `
     --env POSTGRES_DB=TaskRestServices `
-    --volume $pwd\..\bdd\:/docker-entrypoint-initdb.d/ `
+    --volume $pwd\..\bdd\initdb\:/docker-entrypoint-initdb.d/ `
+    --volume task-rest-services-pgdata:/var/lib/postgresql/data/ `
     postgres:10-alpine
 docker create --name task-rest-services-pgadmin `
     --publish 5433:80 `
