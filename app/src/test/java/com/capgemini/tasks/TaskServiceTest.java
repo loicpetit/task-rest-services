@@ -10,6 +10,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.capgemini.tasks.dao.TaskDao;
+
 @RunWith(MockitoJUnitRunner.class)
 public class TaskServiceTest {
 

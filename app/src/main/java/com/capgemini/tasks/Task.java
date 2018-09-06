@@ -29,4 +29,11 @@ public class Task {
         this.message = message;
     }
 
+    public Task clone(){
+        final Task clone = new Task();
+        clone.id = id;
+        clone.message = message;
+        return clone;
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.capgemini.tasks;
 
+import com.capgemini.tasks.dao.TaskDao;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

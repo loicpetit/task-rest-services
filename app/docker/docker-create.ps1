@@ -7,6 +7,7 @@ docker create --name task-rest-services `
     --volume $pwd\..\logs\:/app/logs/ `
     --volume $pwd\..\properties\:/app/config/ `
     portepoisse/task-rest-services:latest
+docker network connect spring-boot-admin-net task-rest-services
 docker create --name task-rest-services-postgres `
     --publish 5432:5432 `
     --network task-rest-services-net `
