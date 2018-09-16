@@ -1,11 +1,7 @@
-FROM openjdk:8-jre-alpine
-
-RUN mkdir app; mkdir app/config; mkdir app/logs
-
-WORKDIR app
+FROM portepoisse/task-rest-services-base:latest
 
 COPY target/task-rest-services-1.0.0.jar task-rest-services.jar
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/usr/bin/java", "-jar", "task-rest-services.jar" , "--spring.profiles.active=docker,dockeradmin" ]
+CMD [ "--spring.profiles.active=docker,dockeradmin" ]
