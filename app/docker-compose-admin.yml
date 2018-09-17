@@ -8,7 +8,7 @@ services:
   webadmin:
     build: ../spring-boot-admin
     ports: 
-      - "8081:8081"
+      - "8081:8081" 
     networks: 
       - net
   databaseadmin:
