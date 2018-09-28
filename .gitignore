@@ -2,6 +2,10 @@
 *.log
 *.gz
 
+# docker
+#   registry
+docker/registry/data/
+
 # maven
 .settings/
 target/
