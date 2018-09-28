@@ -2,17 +2,21 @@ version: '3.2'
 
 services:
   web:
-    build: .
+    image: portepoisse/task-rest-services:latest
     ports:
       - "8080:8080"
     networks: 
-      - net
+      net:
+      springbootadminnet:
+        aliases:
+          - task-rest-services
     volumes:
       - type: volume
-        source: weblogs/
+        source: logs/
         target: /app/logs/
     depends_on: 
       - database
+      - springbootadmin
   database:
     image: postgres:10-alpine
     environment: 
@@ -26,12 +30,12 @@ services:
         source: dbdata/
         target: /var/lib/postgresql/data/
       - type: bind
-        source: ./bdd/initdb
+        source: ../../app/bdd/initdb
         target: /docker-entrypoint-initdb.d
 
 networks:
   net:
 
 volumes:
-  weblogs:
+  logs:
   dbdata:

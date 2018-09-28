@@ -1,17 +1,13 @@
 version: '3.2'
 
 services:
-  web:
-    depends_on: 
-      - database
-      - webadmin
-  webadmin:
-    build: ../spring-boot-admin
+  springbootadmin:
+    image: portepoisse/spring-boot-admin
     ports: 
       - "8081:8081" 
     networks: 
-      - net
-  databaseadmin:
+      - springbootadminnet
+  pgadmin:
     image: dpage/pgadmin4:latest
     environment: 
       - PGADMIN_DEFAULT_EMAIL=loic.petit@capgemini.com
@@ -19,4 +15,8 @@ services:
     ports: 
       - "5433:80"
     networks: 
-      - net
+      - pgadminnet
+
+networks:
+  springbootadminnet:
+  pgadminnet:
