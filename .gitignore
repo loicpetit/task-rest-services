@@ -1,0 +1,9 @@
+# app
+*.log
+*.gz
+
+# maven
+.settings/
+target/
+.classpath
+.project

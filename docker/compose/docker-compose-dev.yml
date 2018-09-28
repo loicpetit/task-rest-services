@@ -1,0 +1,43 @@
+version: '3.2'
+
+services:
+  web:
+    image: portepoisse/task-rest-services-base:latest
+    command: "--spring.profiles.active=docker,dockeradmin"
+    ports:
+      - "8080:8080"
+    networks: 
+      net:
+      springbootadminnet:
+        aliases:
+          - task-rest-services
+    volumes:
+      - type: bind
+        source: ../../app/target/task-rest-services-1.0.0.jar
+        target: /app/task-rest-services.jar
+    depends_on: 
+      - database
+      - springbootadmin
+  database:
+    image: postgres:10-alpine
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Support2424
+      - POSTGRES_DB=TaskRestServices
+    networks: 
+      net:
+      pgadminnet:
+    volumes:
+      - type: volume
+        source: dbdata/
+        target: /var/lib/postgresql/data/
+      - type: bind
+        source: ../../app/bdd/initdb
+        target: /docker-entrypoint-initdb.d
+
+networks:
+  net:
+
+volumes:
+  logs:
+  dbdata:

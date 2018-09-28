@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+  springbootadmin:
+    image: portepoisse/spring-boot-admin
+    ports: 
+      - "8081:8081" 
+    networks: 
+      - springbootadminnet
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment: 
+      - PGADMIN_DEFAULT_EMAIL=loic.petit@capgemini.com
+      - PGADMIN_DEFAULT_PASSWORD=Support2424
+    ports: 
+      - "5433:80"
+    networks: 
+      - pgadminnet
+
+networks:
+  springbootadminnet:
+  pgadminnet:
