@@ -1,0 +1,60 @@
+Source : https://getintodevops.com/blog/the-simple-way-to-run-docker-in-docker-for-ci
+
+Lancer Jenkins
+On bind docker.sock pour que le client docker qu'on va installer dans le container Jenkins utilise notre docker host
+
+docker run -d -p 8000:8080 -p 50000:50000 --name jenkins -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:lts-alpine
+
+On se connecte sur le bash du container jenkins pour installer le client docker
+
+docker exec -it -u root jenkins bash
+
+L'image jenkins est basée sur Debian donc on utilise apt
+Mettre à jour la version de docker pour correspondre à celle du docker host
+
+Pour jenkins:lts -> /usr/bin/docker
+
+apt-get update && \
+apt-get -y install apt-transport-https \
+     ca-certificates \
+     curl \
+     gnupg2 \
+     software-properties-common && \
+curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
+add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+   $(lsb_release -cs) \
+   stable" && \
+apt-get update && \
+apt-get -y install docker-ce=18.06.1~ce~3-0~debian && \
+apt-get -y install maven
+
+Pour jenkins:lts-alpine
+
+apk add --no-cache bash curl git openssh-client maven
+VERSION=18.06.1-ce
+curl -L -o /tmp/docker-$VERSION.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VERSION.tgz \
+    && tar -xz -C /tmp -f /tmp/docker-$VERSION.tgz \
+    && mv /tmp/docker/docker /usr/bin \
+    && rm -rf /tmp/docker-$VERSION /tmp/docker
+
+Vérifier que docker liste les container du docker host
+
+docker container ls -a
+
+Quitter le bash
+
+exit
+
+Accéder à jenkins sur le port 8000
+
+Configurer Jenkins
+
+Quand c'est prêt arreter le container et sauvegarder l'image
+
+docker container stop jenkins
+docker container commit jenkins REPO/IMAGE:TAG
+
+Supprimer le container et relancer jenkins depuis l'image
+docker container rm jenkins
+docker run -d -p 8000:8080 -p 50000:50000 --restart=always --name jenkins -v /var/run/docker.sock:/var/run/docker.sock -v jenkins_home:/var/jenkins_home REPO/IMAGE:TAG

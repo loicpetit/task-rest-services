@@ -1,2 +1,2 @@
-Remove-Item "./data" -Force -Recurse
-New-Item -ItemType directory -Path "./data"
+Remove-Item "$pwd/data" -Force -Recurse
+New-Item -ItemType directory -Path "$pwd/data"
