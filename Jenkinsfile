@@ -14,9 +14,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'pwd'
-                sh 'ls'
-                sh 'mvn -DskipTests clean package -f app'
+                sh 'mvn clean package -f app'
+                junit 'target/surefire-reports/*.xml'
             }
         }
         stage('End') {
