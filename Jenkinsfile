@@ -10,11 +10,11 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.5.4-alpine'
-                    args '--rm --volume maven:/root/.m2 --volume ${WORKSPACE}/app:/app --workdir /app'
+                    args '--rm --volume maven:/root/.m2 --volume ${WORKSPACE}/app:/app'
                 }
             }
             steps {
-                sh 'mvn -DskipTests clean package'
+                sh 'mvn -DskipTests clean package -f /app'
             }
         }
         stage('End') {
