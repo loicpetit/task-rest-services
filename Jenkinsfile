@@ -1,9 +1,16 @@
 pipeline {
-    agent any
+    agent none
     stages {
-        stage('Init'){
+        stage('Init') {
+            agent any
             steps {
                 echo 'Init'
+            }
+        }
+        stage('End') {
+            agent any
+            steps {
+                input 'Close ?'
             }
         }
     }
