@@ -11,6 +11,7 @@ pipeline {
                 docker {
                     image 'maven:3.5.4-alpine'
                     args '--volume maven:/root/.m2'
+                    reuseNode true /* Sinon crée le jar dans un autre workspace */
                 }
             }
             steps {
