@@ -18,6 +18,16 @@ pipeline {
                 junit 'app/target/surefire-reports/*.xml'
             }
         }
+        stage('Image') {
+            steps {
+                sh 'docker build -t portepoisse/task-rest-services:latest app'
+            }
+        }
+        stage('Integration') {
+            steps {
+                sh 'docker tag portepoisse/task-rest-services:latest portepoisse/task-rest-services:integration'
+            }
+        }
         stage('End') {
             steps {
                 input 'Close ?'
