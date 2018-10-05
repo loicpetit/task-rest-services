@@ -3,11 +3,8 @@
 *.gz
 
 # docker
-#   registry
+docker/git/tmp/
 docker/registry/data/
 
 # maven
-.settings/
 target/
-.classpath
-.project

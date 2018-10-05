@@ -19,11 +19,7 @@ services:
       - database
       - springbootadmin
   database:
-    image: postgres:10-alpine
-    environment: 
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Support2424
-      - POSTGRES_DB=TaskRestServices
+    image: portepoisse/task-rest-services-db
     networks: 
       net:
       pgadminnet:
@@ -31,9 +27,6 @@ services:
       - type: volume
         source: dbdata/
         target: /var/lib/postgresql/data/
-      - type: bind
-        source: ../../app/bdd/initdb
-        target: /docker-entrypoint-initdb.d
 
 networks:
   net:
