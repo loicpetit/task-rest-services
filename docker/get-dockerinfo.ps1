@@ -18,3 +18,8 @@ Write-Host * CONTAINERS *
 Write-Host **************
 docker container ls -a
 Write-Host 
+Write-Host **************
+Write-Host * SYSTEM *
+Write-Host **************
+docker system df
+Write-Host 
