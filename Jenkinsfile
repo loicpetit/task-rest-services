@@ -26,7 +26,15 @@ pipeline {
         }
         stage('Integration') {
             steps {
-                sh 'docker tag portepoisse/task-rest-services:latest portepoisse/task-rest-services:integration'
+                echo 'Set up app with docker compose'
+            }
+        }
+        stage('Deliver') {
+            steps {
+                input 'Push app ?'
+                sh 'docker tag portepoisse/task-rest-services:latest registry:5000/portepoisse/task-rest-services:latest'
+                sh 'docker push registry:5000/portepoisse/task-rest-services:latest'
+                sh 'docker image rm registry:5000/portepoisse/task-rest-services:latest'
             }
         }
         stage('End') {
